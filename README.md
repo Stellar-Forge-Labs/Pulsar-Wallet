@@ -1,70 +1,105 @@
-# stellar-payment-links
+# Pulsar Wallet
 
-stellar-payment-links is an open-source toolkit for generating shareable blockchain payment links within the Stellar ecosystem.
+The MetaMask for Stellar. A secure, self-custodial Chrome extension wallet that makes it easy to store, send, receive, swap, and interact with Stellar assets and dApps.
 
-Instead of requiring users to manually copy wallet addresses and transaction parameters, developers can generate simple payment URLs that open a wallet transaction flow instantly.
+## Brand
 
-This project is useful for applications such as:
+**Pulsar Wallet**
 
-- Web3 checkout pages
-- Donation platforms
-- Tipping systems
-- Creator payments
-- NFT mint payments
+## Taglines
 
-The toolkit combines frontend payment interfaces with smart contract validation using Soroban.
+- Your Gateway to Stellar
+- Fast. Secure. Stellar.
+- The Smart Wallet for Stellar
+- Powering the Stellar Ecosystem
+- Sign. Send. Connect.
+- Secure Every Transaction
+- The Wallet Built for Stellar dApps
+- One Wallet. Every Stellar Asset.
 
-## Technical Architecture
+## Brand Personality
 
-### Frontend
-- Next.js payment interface
-- Tailwind CSS UI
-- Wallet interaction hooks
+- Modern
+- Clean
+- Fast
+- Trustworthy
+- Developer-friendly
+- Security-first
 
-### Contracts
-- Soroban payment request contract
-- Signature validation
+## Typography
 
-### Backend
-- Node.js payment link generator
-- Payment verification service
+- **Headings:** Inter Bold
+- **Body:** Inter Regular
+- **Numbers/Addresses:** JetBrains Mono
 
----
+## Core Value Proposition
 
-## 🌊 Drips Wave Program
+Pulsar Wallet is a secure, self-custodial Chrome extension wallet that makes it easy to store, send, receive, swap, and interact with Stellar assets and dApps. Built with security first, it gives users complete control of their keys while providing a seamless experience for the Stellar ecosystem.
 
-This repository participates in the Drips Network Wave Program, which rewards open-source contributors for solving development tasks.
+## Suggested Tech Stack
 
-### How to Participate
-1. Register on the Drips platform.
-2. Connect your GitHub account.
-3. Browse issues in this repository.
-4. Issues are labeled by complexity:
-   - **Trivial** – documentation updates or small fixes
-   - **Medium** – new payment UI components
-   - **High** – backend services or contract modules
-5. Comment on an issue to claim it.
-6. Fork the repository and implement the feature.
-7. Submit a pull request.
-8. After the PR is reviewed and merged, rewards are distributed through the Drips Wave Program.
+- **Frontend:** React + TypeScript
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **State Management:** Zustand
+- **Browser Extension:** Manifest V3
+- **Blockchain SDK:** Stellar SDK
+- **Wallet Standard:** Stellar Wallet Kit
+- **Storage:** Chrome Storage API + encrypted local storage
+- **Cryptography:** Web Crypto API
+- **Testing:** Vitest + Playwright
 
-## Project Structure
+## Roadmap
 
-```
-stellar-payment-links
-│
-├── frontend
-│   Payment UI
-│   Wallet interaction components
-│
-├── contracts
-│   Soroban payment contracts
-│
-├── backend
-│   └── scripts
-│       Link generator
-│       Payment verification
-│
-└── tests
-    Payment flow tests
-```
+### v1.0
+- Wallet creation/import
+- XLM transfers
+- Asset management
+- Transaction history
+
+### v1.5
+- dApp connection
+- Transaction signing
+- Wallet Kit support
+
+### v2.0
+- Token swaps
+- Hardware wallet support
+- NFT support
+- Address book
+
+### v3.0
+- Multi-chain support (optional)
+- Mobile companion app
+- Staking (if supported by ecosystem integrations)
+
+## Logo Concept
+
+A circular icon combining a pulsar emitting three clean beams, a four-point star, and a subtle "P" formed with negative space. The style should be simple enough to work well as a Chrome extension icon at 16x16, 32x32, and 128x128 while still looking premium on larger surfaces.
+
+## Color Palette
+
+| Color         | Hex       |
+| ------------- | --------- |
+| Deep Space    | #0B1026   |
+| Electric Blue | #3B82F6   |
+| Stellar Cyan  | #06B6D4   |
+| White         | #FFFFFF   |
+| Slate Gray    | #64748B   |
+| Success Green | #22C55E   |
+| Error Red     | #EF4444   |
+
+## Development
+
+This project is built as a Chrome Manifest V3 extension.
+
+### Scripts
+
+- Install dependencies: `npm install`
+- Start dev server: `npm run dev`
+- Build extension: `npm run build`
+- Run tests: `npm run test`
+
+## License
+
+MIT
