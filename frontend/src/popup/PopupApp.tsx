@@ -48,3 +48,33 @@ function PopupApp() {
     chrome.runtime.onMessage.addListener(handleMessage);
     return () => chrome.runtime.onMessage.removeListener(handleMessage);
   }, [lock]);
+
+  const handleUnlock = async () => {
+    setLoading(true);
+    setError('');
+    const success = await useWalletStore.getState().unlock(password);
+    setLoading(false);
+    if (success) {
+      setView('unlocked');
+      setPassword('');
+    } else {
+      setError('Invalid password');
+    }
+  };
+
+  const startMnemonicQuiz = () => {
+    const words = generatedMnemonic.split(' ');
+    const index = Math.floor(Math.random() * words.length);
+    setQuizWordIndex(index);
+    const correct = words[index];
+    const options = [correct];
+    while (options.length < 4) {
+      const randomWord = words[Math.floor(Math.random() * words.length)];
+      if (!options.includes(randomWord)) {
+        options.push(randomWord);
+      }
+    }
+    options.sort(() => Math.random() - 0.5);
+    setQuizOptions(options);
+    setQuizAnswer('');
+  };
