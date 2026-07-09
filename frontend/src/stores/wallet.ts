@@ -61,3 +61,11 @@ export const useWalletStore = create<WalletState>((set) => ({
     session.lock();
     set({ publicKey: null, isUnlocked: false });
   },
+
+  reset: async () => {
+    const { clearWalletData, createChromeStorage, createSecureStorage } = await import('../crypto/storage');
+    const storage = createSecureStorage(createChromeStorage());
+    await clearWalletData(storage);
+    session.clear();
+    set({ publicKey: null, isUnlocked: false });
+  },
