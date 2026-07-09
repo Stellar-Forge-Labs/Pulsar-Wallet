@@ -78,3 +78,42 @@ function PopupApp() {
     setQuizOptions(options);
     setQuizAnswer('');
   };
+
+  const handleCreate = async () => {
+    const strength = getPasswordStrength(password);
+    if (strength.score < 3) {
+      setError('Password is too weak. Add uppercase, numbers, or symbols.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    try {
+      const result = await createWallet(password);
+      setGeneratedMnemonic(result.mnemonic);
+      setView('mnemonic');
+    } catch {
+      setError('Failed to create wallet');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleMnemonicNext = () => {
+    startMnemonicQuiz();
+    setView('confirm');
+  };
+
+  const handleConfirmMnemonic = () => {
+    const words = generatedMnemonic.split(' ');
+    const correct = words[quizWordIndex!];
+    if (quizAnswer === correct) {
+      setView('unlocked');
+    } else {
+      setError('Incorrect word. Please try again or restart.');
+      setView('mnemonic');
+    }
+  };
