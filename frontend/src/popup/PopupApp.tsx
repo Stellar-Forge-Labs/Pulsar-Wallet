@@ -157,3 +157,31 @@ function PopupApp() {
   };
 
   const passwordStrength = getPasswordStrength(password);
+
+  if (view === 'loading') {
+    return (
+      <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex items-center justify-center">
+        <p className="text-slate-gray">Loading...</p>
+      </div>
+    );
+  }
+
+  if (view === 'mnemonic') {
+    return (
+      <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
+        <header className="p-4 border-b border-slate-700">
+          <h1 className="text-lg font-bold text-electric-blue">Backup Phrase</h1>
+        </header>
+        <main className="flex-1 p-4 space-y-4">
+          <div className="card">
+            <p className="text-sm text-slate-gray mb-2">Write down these 24 words in order and store them safely.</p>
+            <p className="text-xs text-error-red mb-3">Never share your recovery phrase with anyone.</p>
+            <p className="text-white font-mono text-sm leading-relaxed break-words">{generatedMnemonic}</p>
+          </div>
+          <button className="btn-primary w-full" onClick={handleMnemonicNext}>
+            I wrote down my phrase
+          </button>
+        </main>
+      </div>
+    );
+  }
