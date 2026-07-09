@@ -43,3 +43,10 @@ export async function generateMnemonic(strength: MnemonicStrength = 256): Promis
   const wallet = await getStellarHDWallet();
   return wallet.generateMnemonic({ entropyBits: strength });
 }
+
+export function validateMnemonic(mnemonic: string): boolean {
+  if (!stellarHDWallet) {
+    throw new Error('StellarHDWallet not initialized');
+  }
+  return stellarHDWallet.validateMnemonic(mnemonic);
+}
