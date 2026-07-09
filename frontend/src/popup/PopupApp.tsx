@@ -186,6 +186,36 @@ function PopupApp() {
     );
   }
 
+  if (view === 'confirm') {
+    return (
+      <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
+        <header className="p-4 border-b border-slate-700">
+          <h1 className="text-lg font-bold text-electric-blue">Confirm Phrase</h1>
+        </header>
+        <main className="flex-1 p-4 space-y-4">
+          <div className="card">
+            <p className="text-sm text-slate-gray mb-3">Select the correct word for position #{quizWordIndex! + 1}</p>
+            <div className="grid grid-cols-2 gap-2">
+              {quizOptions.map((option) => (
+                <button
+                  key={option}
+                  className={`btn-secondary w-full ${quizAnswer === option ? 'border-success-green text-success-green' : ''}`}
+                  onClick={() => setQuizAnswer(option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+          {error && <p className="text-error-red text-sm">{error}</p>}
+          <button className="btn-primary w-full" onClick={handleConfirmMnemonic} disabled={!quizAnswer}>
+            Confirm
+          </button>
+        </main>
+      </div>
+    );
+  }
+
   if (view === 'create') {
     return (
       <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
@@ -283,32 +313,100 @@ function PopupApp() {
     );
   }
 
-  if (view === 'confirm') {
+  if (view === 'locked') {
     return (
       <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
-        <header className="p-4 border-b border-slate-700">
-          <h1 className="text-lg font-bold text-electric-blue">Confirm Phrase</h1>
+        <header className="flex items-center justify-center p-6 border-b border-slate-700">
+          <h1 className="text-xl font-bold text-electric-blue">Pulsar Wallet</h1>
         </header>
         <main className="flex-1 p-4 space-y-4">
-          <div className="card">
-            <p className="text-sm text-slate-gray mb-3">Select the correct word for position #{quizWordIndex! + 1}</p>
-            <div className="grid grid-cols-2 gap-2">
-              {quizOptions.map((option) => (
-                <button
-                  key={option}
-                  className={`btn-secondary w-full ${quizAnswer === option ? 'border-success-green text-success-green' : ''}`}
-                  onClick={() => setQuizAnswer(option)}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
+          <div>
+            <label className="block text-sm text-slate-gray mb-1">Password</label>
+            <input
+              type="password"
+              className="input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
+              placeholder="Enter password"
+            />
           </div>
           {error && <p className="text-error-red text-sm">{error}</p>}
-          <button className="btn-primary w-full" onClick={handleConfirmMnemonic} disabled={!quizAnswer}>
-            Confirm
+          <button className="btn-primary w-full" onClick={handleUnlock} disabled={loading}>
+            {loading ? 'Unlocking...' : 'Unlock'}
           </button>
+          <div className="grid grid-cols-2 gap-2">
+            <button className="btn-secondary w-full" onClick={() => setView('create')}>
+              Create
+            </button>
+            <button className="btn-secondary w-full" onClick={() => setView('import')}>
+              Import
+            </button>
+          </div>
         </main>
       </div>
     );
   }
+
+  return (
+    <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
+      <header className="flex items-center justify-between p-4 border-b border-slate-700">
+        <h1 className="text-lg font-bold text-electric-blue">Pulsar Wallet</h1>
+        <span className="text-xs text-stellar-cyan capitalize bg-slate-800 px-2 py-1 rounded">
+          {network}
+        </span>
+      </header>
+
+      <main className="flex-1 p-4">
+        <div className="space-y-4">
+          <div className="card">
+            <p className="text-slate-gray text-sm">Wallet connected</p>
+            <p className="text-white font-mono text-sm mt-1 break-all">{publicKey}</p>
+          </div>
+
+          <div className="space-y-2">
+            <button className="btn-primary w-full">Send</button>
+            <button className="btn-secondary w-full">Receive</button>
+          </div>
+
+          <div className="card">
+            <label className="block text-sm text-slate-gray mb-1">
+              Auto-lock after (minutes)
+            </label>
+            <input
+              type="number"
+              className="input"
+              value={autoLockMinutes}
+              onChange={(e) => {
+                const minutes = Number(e.target.value);
+                setAutoLockMinutes(minutes);
+                if (minutes > 0) {
+                  chrome.runtime.sendMessage({ type: 'SET_AUTO_LOCK', minutes });
+                } else {
+                  chrome.runtime.sendMessage({ type: 'CANCEL_AUTO_LOCK' });
+                }
+              }}
+              min={1}
+              max={60}
+            />
+          </div>
+
+          <div className="space-y-2 pt-2">
+            <button className="btn-secondary w-full" onClick={handleLock}>
+              Lock
+            </button>
+            <button className="btn-danger w-full" onClick={handleReset}>
+              Reset Wallet
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <footer className="p-3 border-t border-slate-700 text-center">
+        <p className="text-xs text-slate-gray capitalize">{network}</p>
+      </footer>
+    </div>
+  );
+}
+
+export default PopupApp;
