@@ -1,33 +1,26 @@
 import { create } from 'zustand';
+import { session } from '../crypto/session';
 
 export interface WalletState {
-  mnemonic: string | null;
   publicKey: string | null;
-  secretKey: string | null;
   isUnlocked: boolean;
-  setMnemonic: (mnemonic: string) => void;
-  setPublicKey: (publicKey: string) => void;
-  setSecretKey: (secretKey: string) => void;
-  unlock: () => void;
+  hasWallet: boolean;
+  unlock: (password: string) => Promise<boolean>;
   lock: () => void;
-  reset: () => void;
+  reset: () => Promise<void>;
+  createWallet: (password: string) => Promise<{ mnemonic: string; publicKey: string }>;
+  importWallet: (source: string, password: string) => Promise<{ publicKey: string }>;
+  checkHasWallet: () => Promise<void>;
 }
 
 export const useWalletStore = create<WalletState>((set) => ({
-  mnemonic: null,
   publicKey: null,
-  secretKey: null,
   isUnlocked: false,
-  setMnemonic: (mnemonic) => set({ mnemonic }),
-  setPublicKey: (publicKey) => set({ publicKey }),
-  setSecretKey: (secretKey) => set({ secretKey }),
-  unlock: () => set({ isUnlocked: true }),
-  lock: () => set({ isUnlocked: false }),
-  reset: () =>
-    set({
-      mnemonic: null,
-      publicKey: null,
-      secretKey: null,
-      isUnlocked: false,
-    }),
-}));
+  hasWallet: false,
+
+  checkHasWallet: async () => {
+    const { loadWalletData, createChromeStorage, createSecureStorage } = await import('../crypto/storage');
+    const storage = createSecureStorage(createChromeStorage());
+    const data = await loadWalletData(storage);
+    set({ hasWallet: !!data });
+  },
