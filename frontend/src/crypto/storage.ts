@@ -22,3 +22,30 @@ export function createSecureStorage(chromeStorage: ChromeStorage): SecureStorage
     },
   };
 }
+
+export interface StoredWalletData {
+  encryptedMnemonic: string;
+  encryptedSecretKey?: string;
+  createdAt: string;
+}
+
+export async function saveWalletData(
+  storage: SecureStorage,
+  data: StoredWalletData
+): Promise<void> {
+  await storage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+export async function loadWalletData(storage: SecureStorage): Promise<StoredWalletData | null> {
+  const raw = await storage.getItem(STORAGE_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as StoredWalletData;
+  } catch {
+    return null;
+  }
+}
+
+export async function clearWalletData(storage: SecureStorage): Promise<void> {
+  await storage.removeItem(STORAGE_KEY);
+}
