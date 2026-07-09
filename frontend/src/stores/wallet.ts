@@ -96,3 +96,40 @@ export const useWalletStore = create<WalletState>((set) => ({
     set({ publicKey: keypair.publicKey(), isUnlocked: true });
     return { mnemonic, publicKey: keypair.publicKey() };
   },
+
+  importWallet: async (source: string, password: string) => {
+      const { encryptSecret, keyPairFromSecret, validateMnemonic } = await import('../crypto/crypto');
+    const { saveWalletData, createChromeStorage, createSecureStorage } = await import('../crypto/storage');
+
+    let keypair: { publicKey: string; secretKey: string };
+
+    if (validateMnemonic(source)) {
+      const { Keypair } = require('@stellar/stellar-base');
+      keypair = {
+        publicKey: Keypair.fromMnemonic(source, "m/44'/148'/0'").publicKey(),
+        secretKey: Keypair.fromMnemonic(source, "m/44'/148'/0'").secret(),
+      };
+    } else {
+      keypair = keyPairFromSecret(source);
+    }
+
+    const encryptedMnemonic = await encryptSecret(password, source);
+    const encryptedSecretKey = await encryptSecret(password, keypair.secretKey);
+
+    const storage = createSecureStorage(createChromeStorage());
+    await saveWalletData(storage, {
+      encryptedMnemonic,
+      encryptedSecretKey,
+      createdAt: new Date().toISOString(),
+    });
+
+    session.unlock({
+      mnemonic: source,
+      publicKey: keypair.publicKey,
+      secretKey: keypair.secretKey,
+    });
+
+    set({ publicKey: keypair.publicKey, isUnlocked: true });
+    return { publicKey: keypair.publicKey };
+  },
+}));
