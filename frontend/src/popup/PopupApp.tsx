@@ -185,3 +185,130 @@ function PopupApp() {
       </div>
     );
   }
+
+  if (view === 'create') {
+    return (
+      <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
+        <header className="p-4 border-b border-slate-700">
+          <h1 className="text-lg font-bold text-electric-blue">Create Wallet</h1>
+        </header>
+        <main className="flex-1 p-4 space-y-4">
+          <div>
+            <label className="block text-sm text-slate-gray mb-1">Password</label>
+            <input
+              type="password"
+              className="input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Min 8 characters"
+            />
+            {password && (
+              <div className="mt-2">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-2 bg-slate-700 rounded-full overflow-hidden">
+                    <div className={`h-full ${passwordStrength.color} transition-all`} style={{ width: `${(passwordStrength.score / 6) * 100}%` }} />
+                  </div>
+                  <span className="text-xs text-slate-gray">{passwordStrength.label}</span>
+                </div>
+              </div>
+            )}
+          </div>
+          <div>
+            <label className="block text-sm text-slate-gray mb-1">Confirm Password</label>
+            <input
+              type="password"
+              className="input"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Repeat password"
+            />
+          </div>
+          {error && <p className="text-error-red text-sm">{error}</p>}
+          <button className="btn-primary w-full" onClick={handleCreate} disabled={loading}>
+            {loading ? 'Creating...' : 'Create Wallet'}
+          </button>
+          <button className="btn-secondary w-full" onClick={() => setView('locked')}>
+            Back
+          </button>
+        </main>
+      </div>
+    );
+  }
+
+  if (view === 'import') {
+    return (
+      <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
+        <header className="p-4 border-b border-slate-700">
+          <h1 className="text-lg font-bold text-electric-blue">Import Wallet</h1>
+        </header>
+        <main className="flex-1 p-4 space-y-4">
+          <div>
+            <label className="block text-sm text-slate-gray mb-1">Mnemonic or Secret Key</label>
+            <textarea
+              className="input h-24 resize-none"
+              value={importValue}
+              onChange={(e) => setImportValue(e.target.value)}
+              placeholder="Enter 12/24 words or secret key"
+            />
+          </div>
+          <div>
+            <label className="block text-sm text-slate-gray mb-1">Password</label>
+            <input
+              type="password"
+              className="input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Min 8 characters"
+            />
+            {password && (
+              <div className="mt-2">
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-2 bg-slate-700 rounded-full overflow-hidden">
+                    <div className={`h-full ${passwordStrength.color} transition-all`} style={{ width: `${(passwordStrength.score / 6) * 100}%` }} />
+                  </div>
+                  <span className="text-xs text-slate-gray">{passwordStrength.label}</span>
+                </div>
+              </div>
+            )}
+          </div>
+          {error && <p className="text-error-red text-sm">{error}</p>}
+          <button className="btn-primary w-full" onClick={handleImport} disabled={loading}>
+            {loading ? 'Importing...' : 'Import Wallet'}
+          </button>
+          <button className="btn-secondary w-full" onClick={() => setView('locked')}>
+            Back
+          </button>
+        </main>
+      </div>
+    );
+  }
+
+  if (view === 'confirm') {
+    return (
+      <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
+        <header className="p-4 border-b border-slate-700">
+          <h1 className="text-lg font-bold text-electric-blue">Confirm Phrase</h1>
+        </header>
+        <main className="flex-1 p-4 space-y-4">
+          <div className="card">
+            <p className="text-sm text-slate-gray mb-3">Select the correct word for position #{quizWordIndex! + 1}</p>
+            <div className="grid grid-cols-2 gap-2">
+              {quizOptions.map((option) => (
+                <button
+                  key={option}
+                  className={`btn-secondary w-full ${quizAnswer === option ? 'border-success-green text-success-green' : ''}`}
+                  onClick={() => setQuizAnswer(option)}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+          {error && <p className="text-error-red text-sm">{error}</p>}
+          <button className="btn-primary w-full" onClick={handleConfirmMnemonic} disabled={!quizAnswer}>
+            Confirm
+          </button>
+        </main>
+      </div>
+    );
+  }
