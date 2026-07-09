@@ -49,3 +49,17 @@ export async function loadWalletData(storage: SecureStorage): Promise<StoredWall
 export async function clearWalletData(storage: SecureStorage): Promise<void> {
   await storage.removeItem(STORAGE_KEY);
 }
+
+export interface ChromeStorage {
+  get(keys: string | string[]): Promise<Record<string, unknown>>;
+  set(items: Record<string, unknown>): Promise<void>;
+  remove(keys: string | string[]): Promise<void>;
+}
+
+export function createChromeStorage(): ChromeStorage {
+  return {
+    get: (keys) => chrome.storage.local.get(keys),
+    set: (items) => chrome.storage.local.set(items),
+    remove: (keys) => chrome.storage.local.remove(keys),
+  };
+}
