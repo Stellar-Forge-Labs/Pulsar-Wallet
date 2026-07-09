@@ -117,3 +117,43 @@ function PopupApp() {
       setView('mnemonic');
     }
   };
+
+  const handleImport = async () => {
+    if (!importValue.trim()) {
+      setError('Please enter a mnemonic or secret key');
+      return;
+    }
+    const strength = getPasswordStrength(password);
+    if (strength.score < 3) {
+      setError('Password is too weak. Add uppercase, numbers, or symbols.');
+      return;
+    }
+    setLoading(true);
+    setError('');
+    try {
+      await importWallet(importValue.trim(), password);
+      setView('unlocked');
+      setImportValue('');
+      setPassword('');
+    } catch {
+      setError('Invalid mnemonic or secret key');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLock = () => {
+    lock();
+    setView('locked');
+    setPassword('');
+    setError('');
+  };
+
+  const handleReset = async () => {
+    await reset();
+    setView('locked');
+    setPassword('');
+    setError('');
+  };
+
+  const passwordStrength = getPasswordStrength(password);
