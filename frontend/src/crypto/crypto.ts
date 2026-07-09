@@ -103,3 +103,17 @@ export async function encryptSecret(password: string, plaintext: string): Promis
 
   return Buffer.from(combined).toString('base64');
 }
+
+export async function decryptSecret(password: string, encryptedBase64: string): Promise<string> {
+  const decoder = new TextDecoder();
+  const combined = Buffer.from(encryptedBase64, 'base64');
+  const salt = combined.subarray(0, 16);
+  const iv = combined.subarray(16, 28);
+  const data = combined.subarray(28);
+
+  const baseKey = await deriveKey(password, salt);
+  const aesKey = await crypto.subtle.importKey('raw', baseKey, 'AES-GCM', false, ['decrypt']);
+
+  const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, aesKey, data);
+  return decoder.decode(decrypted);
+}
