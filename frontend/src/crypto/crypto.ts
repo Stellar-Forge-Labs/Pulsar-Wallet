@@ -50,3 +50,16 @@ export function validateMnemonic(mnemonic: string): boolean {
   }
   return stellarHDWallet.validateMnemonic(mnemonic);
 }
+
+export function deriveKeyPair(seed: Buffer, path: string): DerivedKeyPair {
+  const wallet = stellarHDWallet;
+  if (!wallet) {
+    throw new Error('StellarHDWallet not initialized');
+  }
+  const hdWallet = wallet.fromSeed(seed);
+  return {
+    publicKey: hdWallet.getPublicKey(0),
+    secretKey: hdWallet.getSecret(0),
+    path,
+  };
+}
