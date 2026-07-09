@@ -25,6 +25,7 @@ dist/
 build/
 .output/
 .vite/
+frontend/dist/
 *.tsbuildinfo
 
 # Test coverage
@@ -38,6 +39,33 @@ coverage/
 # Logs
 *.log
 
-# Project context / docs
-AGENTS.md
+# Misc
+.cache/
+.temp/
+.tmp/
+
+# Project context / docs (IMPLEMENTATION.md is managed by user only, never auto-updated)
 IMPLEMENTATION.md
+implementation.md
+
+# Extension packaging
+*.zip
+*.crx
+dist/manifest.json
+
+# OS-specific
+.DS_Store
+.AppleDouble
+.LSOverride
+*.pem
+
+# IDE-specific
+.vscode/settings.json
+.vscode/launch.json
+.DS_Store/
+.env.test
+
+# Temporary files
+*.tmp
+.eslintcache
+.stylelintcache
