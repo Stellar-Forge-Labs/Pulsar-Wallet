@@ -1,105 +1,154 @@
-# Pulsar Wallet
+# Pulsar Wallet
 
-The MetaMask for Stellar. A secure, self-custodial Chrome extension wallet that makes it easy to store, send, receive, swap, and interact with Stellar assets and dApps.
+> **Pulsar Wallet** – the “MetaMask for Stellar.”  A secure, self‑custodial Chrome extension that makes it easy to store, send, receive, swap, and interact with Stellar assets and dApps.
 
-## Brand
+---
 
-**Pulsar Wallet**
+## 1. Why Pulsar?
 
-## Taglines
+- **Self‑custodial** – you own the keys, no custodial services.
+- **Chrome‑extension first** – no local node, no CLI – just a lightweight browser app.
+- **Stellar‑centric** – supports XLM, SPL‑tokens, and the full Stellar SDK.
+- **Zero‑friction dApp experience** – automatic injection of a JSON‑RPC provider like any other wallet.
 
-- Your Gateway to Stellar
-- Fast. Secure. Stellar.
-- The Smart Wallet for Stellar
-- Powering the Stellar Ecosystem
-- Sign. Send. Connect.
-- Secure Every Transaction
-- The Wallet Built for Stellar dApps
-- One Wallet. Every Stellar Asset.
+---
 
-## Brand Personality
+## 2. Quickstart
 
-- Modern
-- Clean
-- Fast
-- Trustworthy
-- Developer-friendly
-- Security-first
+```bash
+# 1️⃣  Clone the repo
+git clone https://github.com/your-org/pulsar-wallet
+cd pulsar-wallet
 
-## Typography
+# 2️⃣  Install dependencies
+npm install
 
-- **Headings:** Inter Bold
-- **Body:** Inter Regular
-- **Numbers/Addresses:** JetBrains Mono
+# 3️⃣  Run the Vite dev server (auto‑reload on changes)
+npm run dev
 
-## Core Value Proposition
+# 4️⃣  In another terminal, build the Chrome extension
+npm run build
+```
 
-Pulsar Wallet is a secure, self-custodial Chrome extension wallet that makes it easy to store, send, receive, swap, and interact with Stellar assets and dApps. Built with security first, it gives users complete control of their keys while providing a seamless experience for the Stellar ecosystem.
+Open Chrome → **Extensions** → **Load unpacked** → `frontend/dist`.  You can now use the extension.
 
-## Suggested Tech Stack
+---
 
-- **Frontend:** React + TypeScript
-- **Build Tool:** Vite
-- **Styling:** Tailwind CSS
-- **State Management:** Zustand
-- **Browser Extension:** Manifest V3
-- **Blockchain SDK:** Stellar SDK
-- **Wallet Standard:** Stellar Wallet Kit
-- **Storage:** Chrome Storage API + encrypted local storage
-- **Cryptography:** Web Crypto API
-- **Testing:** Vitest + Playwright
+## 3. Folder Layout
 
-## Roadmap
+```
+frontend/      # Chrome extension source
+├─ src/        # React + TS
+│   ├─ popup/   # Popup UI
+│   ├─ siterext/ # Content script injection (future work)
+│   ├─ background/packages/  # Background script
+│   ├─ stores/  # Zustand stores
+│   ├─ crypto/  # Key management + crypto helpers
+│   └─ App.tsx   # Root component
+├─ public/     # Manifest, icons, public assets
+├─ tests/
+│   ├─ unit/
+│   └─ e2e/
+├─ vite.config.ts
+└─ package.json
 
-### v1.0
-- Wallet creation/import
-- XLM transfers
-- Asset management
-- Transaction history
+contracts/     # Placeholder for future contract dev (if any)
+backend/       # Placeholder for server logic if needed
+```
 
-### v1.5
-- dApp connection
-- Transaction signing
-- Wallet Kit support
+---
 
-### v2.0
-- Token swaps
-- Hardware wallet support
-- NFT support
-- Address book
+## 4. Core Features
 
-### v3.0
-- Multi-chain support (optional)
-- Mobile companion app
-- Staking (if supported by ecosystem integrations)
+| Feature | Status | Notes |
+|--------|--------|-------|
+| Create / import wallet | ✔️ | Mnemonic + HD deriv thrott (stellar-hd-wallet) |
+| View balances (XLM + assets) | ✔️ | Uses Stellar Horizon RPC |
+| Send / receive assets | ✔️ | UTXO‑style metadata & ADA‑style fee |
+| Transaction history | ✔️ | Persist टाइम in Chrome storage |
+| dApp connection (Web3‑like) | ❓ | Pending – plan to expose `window.stellar` provider |
+| Asset swap (via external DEX) | ❓ | TBD |
 
-## Logo Concept
+---
 
-A circular icon combining a pulsar emitting three clean beams, a four-point star, and a subtle "P" formed with negative space. The style should be simple enough to work well as a Chrome extension icon at 16x16, 32x32, and 128x128 while still looking premium on larger surfaces.
+## 5. Development
 
-## Color Palette
+### 5.1. Install the requested toolchain
 
-| Color         | Hex       |
-| ------------- | --------- |
-| Deep Space    | #0B1026   |
-| Electric Blue | #3B82F6   |
-| Stellar Cyan  | #06B6D4   |
-| White         | #FFFFFF   |
-| Slate Gray    | #64748B   |
-| Success Green | #22C55E   |
-| Error Red     | #EF4444   |
+```bash
+# Node v20+ is required
+node -v
 
-## Development
+# Install dependencies
+npm install
+```
 
-This project is built as a Chrome Manifest V3 extension.
+### 5.2. Run & watch
 
-### Scripts
+```bash
+# Vite dev server + hot‑module replacement
+npm runप्रदेश
 
-- Install dependencies: `npm install`
-- Start dev server: `npm run dev`
-- Build extension: `npm run build`
-- Run tests: `npm run test`
+# Compile the extension (vite build + zip for Chrome)
+npm run build
+```
 
-## License
+### 5.3. Testing
 
-MIT
+ gosh
+```bash
+# Unit tests (Vitest)
+npm run test
+
+# Watch mode
+npm run test:watch
+
+# End‑to‑end (Playwright)
+npm run test:e2e
+```
+
+**Note:** E2E is currently a placeholder; you’ll need to wire up the Playwright config with a manifest injection.
+
+### 5.4. Lint & formatting
+
+```bash
+npm run lint          # ESLint + TypeScript type‑checking
+npm run format        # Prettier
+```
+
+---
+
+## 6. Contribution Guidelines
+
+1. **Fork** the repo and create a feature branch.  
+2. Write clear, short commit messages.  
+3. Ensure all tests pass (`npm run test`).  
+4. Submit a PR with an English description of the change.  
+
+We welcome issues, feature requests, and PRs that improve security, UX, or add new Stellar features.
+
+---
+
+## 7. Project Roadmapത്തിലുള്ള
+
+| Version | Milestone |
+|--------|-----------|
+| v1.0 | Wallet creation, XLM send/receive, asset list, transaction history |
+| v1.5 | dApp injection, transaction signing, WalletKit compatibility |
+| v2.0 | Asset swap, hardware‑wallet pairing, NFT support, address book |
+| v3.0 | Multi‑chain bridge, mobile companion, staking (if ecosystem supports) |
+
+---
+
+## 8. License
+
+MIT © 2024 Pulsar Wallet contributors
+
+---
+
+## 9. Q&A & Support
+
+- ❤️ Want to chat? Join our [Discord](https://discord.gg/pulsar-wallet) or open an issue.  
+- Documentation in `IMPLEMENTATION.md` covers deeper design decisions and architecture.  
+
+Thank you for using Pulsar Wallet – *Your gateway to the Stellar ecosystem!*
