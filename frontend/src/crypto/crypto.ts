@@ -72,3 +72,12 @@ export function createRandomKeyPair(): KeyPair {
     secretKey: keypair.secret(),
   };
 }
+
+export function keyPairFromSecret(secret: string): KeyPair {
+  const { Keypair } = require('@stellar/stellar-base');
+  const keypair = Keypair.fromSecret(secret);
+  return {
+    publicKey: keypair.publicKey(),
+    secretKey: secret,
+  };
+}
