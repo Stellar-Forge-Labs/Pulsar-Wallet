@@ -81,3 +81,25 @@ export function keyPairFromSecret(secret: string): KeyPair {
     secretKey: secret,
   };
 }
+
+export async function encryptSecret(password: string, plaintext: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const salt = new Uint8Array(crypto.getRandomValues(new Uint8Array(16)));
+  const iv = new Uint8Array(crypto.getRandomValues(new Uint8Array(12)));
+
+  const baseKey = await deriveKey(password, salt);
+  const aesKey = await crypto.subtle.importKey('raw', baseKey, 'AES-GCM', false, ['encrypt']);
+
+  const encrypted = await crypto.subtle.encrypt(
+    { name: 'AES-GCM', iv },
+    aesKey,
+    encoder.encode(plaintext)
+  );
+
+  const combined = new Uint8Array(salt.length + iv.length + encrypted.byteLength);
+  combined.set(salt, 0);
+  combined.set(iv, salt.length);
+  combined.set(new Uint8Array(encrypted), salt.length + iv.length);
+
+  return Buffer.from(combined).toString('base64');
+}
