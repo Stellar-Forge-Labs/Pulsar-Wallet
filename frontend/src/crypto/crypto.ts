@@ -38,3 +38,8 @@ export function getPasswordStrength(password: string): PasswordStrength {
   if (score <= 4) return { score, label: 'Medium', color: 'bg-yellow-500' };
   return { score, label: 'Strong', color: 'bg-success-green' };
 }
+
+export async function generateMnemonic(strength: MnemonicStrength = 256): Promise<string> {
+  const wallet = await getStellarHDWallet();
+  return wallet.generateMnemonic({ entropyBits: strength });
+}
