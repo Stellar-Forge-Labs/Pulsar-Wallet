@@ -56,3 +56,8 @@ export const useWalletStore = create<WalletState>((set) => ({
       return false;
     }
   },
+
+  lock: () => {
+    session.lock();
+    set({ publicKey: null, isUnlocked: false });
+  },
