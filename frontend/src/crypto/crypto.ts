@@ -63,3 +63,12 @@ export function deriveKeyPair(seed: Buffer, path: string): DerivedKeyPair {
     path,
   };
 }
+
+export function createRandomKeyPair(): KeyPair {
+  const { Keypair } = require('@stellar/stellar-base');
+  const keypair = Keypair.random();
+  return {
+    publicKey: keypair.publicKey(),
+    secretKey: keypair.secret(),
+  };
+}
