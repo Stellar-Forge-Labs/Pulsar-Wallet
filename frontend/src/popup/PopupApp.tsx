@@ -8,7 +8,7 @@ type View = 'loading' | 'locked' | 'unlocked' | 'create' | 'import' | 'mnemonic'
 
 function PopupApp() {
   const { publicKey, lock, reset, createWallet, importWallet, checkHasWallet } = useWalletStore();
-  const { network } = useNetworkStore();
+  const { network, setNetwork } = useNetworkStore();
   const { autoLockMinutes, setAutoLockMinutes } = useUiStore();
 
   const [view, setView] = useState<View>('loading');
@@ -352,9 +352,14 @@ function PopupApp() {
     <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
       <header className="flex items-center justify-between p-4 border-b border-slate-700">
         <h1 className="text-lg font-bold text-electric-blue">Pulsar Wallet</h1>
-        <span className="text-xs text-stellar-cyan capitalize bg-slate-800 px-2 py-1 rounded">
-          {network}
-        </span>
+        <select 
+          className="bg-slate-800 text-stellar-cyan text-xs px-2 py-1 rounded border border-slate-700 outline-none cursor-pointer capitalize"
+          value={network}
+          onChange={(e) => setNetwork(e.target.value as 'testnet' | 'mainnet')}
+        >
+          <option value="mainnet">Mainnet</option>
+          <option value="testnet">Testnet</option>
+        </select>
       </header>
 
       <main className="flex-1 p-4">
