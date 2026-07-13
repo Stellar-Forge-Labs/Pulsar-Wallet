@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./logo.png" alt="Pulsar Wallet Logo" width="200"/>
+</p>
+
 # Pulsar Wallet
 
 > **Pulsar Wallet** – the “MetaMask for Stellar.”  A secure, self‑custodial Chrome extension that makes it easy to store, send, receive, swap, and interact with Stellar assets and dApps.
