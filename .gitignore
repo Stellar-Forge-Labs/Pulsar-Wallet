@@ -3,7 +3,6 @@
 Thumbs.db
 
 # IDE / Editor
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -32,8 +31,6 @@ frontend/dist/
 coverage/
 
 # Environment variables
-.env
-.env.local
 .env.*.local
 
 # Logs
@@ -60,12 +57,10 @@ dist/manifest.json
 *.pem
 
 # IDE-specific
-.vscode/settings.json
-.vscode/launch.json
 .DS_Store/
-.env.test
 
 # Temporary files
 *.tmp
 .eslintcache
 .stylelintcache
+config.bat
