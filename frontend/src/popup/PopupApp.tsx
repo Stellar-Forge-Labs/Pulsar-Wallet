@@ -3,6 +3,8 @@ import { useWalletStore } from '../stores/wallet';
 import { useNetworkStore } from '../stores/network';
 import { useUiStore } from '../stores/ui';
 import { getPasswordStrength } from '../crypto/crypto';
+import { useTransactionStore } from '../stores/transaction';
+import { TransactionConfirm } from './components/TransactionConfirm';
 
 type View = 'loading' | 'locked' | 'unlocked' | 'create' | 'import' | 'mnemonic' | 'confirm';
 
@@ -10,6 +12,7 @@ function PopupApp() {
   const { publicKey, lock, reset, createWallet, importWallet, checkHasWallet } = useWalletStore();
   const { network } = useNetworkStore();
   const { autoLockMinutes, setAutoLockMinutes } = useUiStore();
+  const { status: txStatus, setDraft } = useTransactionStore();
 
   const [view, setView] = useState<View>('loading');
   const [password, setPassword] = useState('');
@@ -348,6 +351,10 @@ function PopupApp() {
     );
   }
 
+  if (txStatus !== 'idle') {
+    return <TransactionConfirm />;
+  }
+
   return (
     <div className="min-w-[320px] min-h-[480px] bg-deep-space text-white font-body flex flex-col">
       <header className="flex items-center justify-between p-4 border-b border-slate-700">
@@ -365,7 +372,12 @@ function PopupApp() {
           </div>
 
           <div className="space-y-2">
-            <button className="btn-primary w-full">Send</button>
+            <button className="btn-primary w-full" onClick={() => {
+              setDraft({
+                destination: 'GBQA5O5T2M2ZY36QW4P4T5AABR2N7C6N2A2R3X4G5B6C7D8E9F0A1B2C',
+                amount: '1'
+              });
+            }}>Send (Test)</button>
             <button className="btn-secondary w-full">Receive</button>
           </div>
 
