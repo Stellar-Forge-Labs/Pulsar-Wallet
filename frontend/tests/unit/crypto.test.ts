@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createRandomKeyPair, keyPairFromSecret, validateMnemonic, generateMnemonic } from '../../src/crypto/crypto';
+import { createRandomKeyPair, keyPairFromSecret, validateMnemonic, generateMnemonic, getPasswordStrength, encryptSecret, decryptSecret } from '../../src/crypto/crypto';
 
 describe('Crypto', () => {
   it('creates a random keypair', () => {
@@ -19,5 +19,21 @@ describe('Crypto', () => {
     await generateMnemonic();
     expect(validateMnemonic('illness spike retreat truth genius clock brain pass fit cave bargain toe')).toBe(true);
     expect(validateMnemonic('invalid words here definitely not a valid mnemonic phrase')).toBe(false);
+  });
+
+  it('correctly calculates password strength', () => {
+    expect(getPasswordStrength('weak').score).toBeLessThanOrEqual(2);
+    expect(getPasswordStrength('SuperStrongP@ssw0rd!').score).toBeGreaterThan(4);
+  });
+
+  it('encrypts and decrypts secrets using AES-GCM', async () => {
+    const secret = 'SDAWB5AQYWKOZQFO4S2OYQ2P7GFOWY5J5GVYQLAXVA3QK2KQRDWZ74ZK';
+    const password = 'StrongPassword123!';
+    
+    const encryptedBase64 = await encryptSecret(password, secret);
+    expect(encryptedBase64).not.toBe(secret);
+    
+    const decrypted = await decryptSecret(password, encryptedBase64);
+    expect(decrypted).toBe(secret);
   });
 });
