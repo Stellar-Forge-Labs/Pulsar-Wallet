@@ -366,7 +366,9 @@ function PopupApp() {
         <div className="space-y-4">
           <div className="card">
             <p className="text-slate-gray text-sm">Wallet connected</p>
-            <p className="text-white font-mono text-sm mt-1 break-all">{publicKey}</p>
+            <p className="text-white font-mono text-sm mt-1" title={publicKey || ''}>
+              {publicKey ? `${publicKey.slice(0, 6)}...${publicKey.slice(-6)}` : 'Loading...'}
+            </p>
           </div>
 
           <div className="space-y-2">
